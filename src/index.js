@@ -3,7 +3,6 @@ const path = require('path');
 
 const app = express();
 
-// Settings.
 const settings = {
     port: process.env.PORT,
     publicDir: path.join(__dirname, '../public'),
@@ -12,5 +11,5 @@ const settings = {
 app.use(express.static(settings.publicDir));
 
 app.listen(settings.port, () => {
-    console.log(`Server is up and running on port ${settings.port}`);
+    console.log(`Server is up and running on port ${settings.port}!`);
 });
