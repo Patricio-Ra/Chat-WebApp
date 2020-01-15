@@ -15,16 +15,18 @@ const settings = {
 app.use(express.static(settings.publicDir));
 app.use(express.json());
 
-
-let count = 0;
-
 io.on('connection', (socket) => {
     console.log('New WebSocket connection');
-    socket.emit('countUpdated', count);
+    
+    socket.emit('message', 'Welcome, user!');
+    socket.broadcast.emit('message', 'User has joined the chat!');
 
-    socket.on('increment', () => {
-        count++;
-        io.emit('countUpdated', count);
+    socket.on('sendMessage', (message) => {
+        io.emit('message', message);
+    });
+
+    socket.on('disconnect', () => {
+        io.emit('message', 'User has left the chat!');
     });
 });
 

@@ -7,8 +7,19 @@
     <title>Chat-app</title>
 </head>
 <body>
-    Chat app
-    <button id="incrementBtn">+1</button>
+    <header>
+        <h1>Chat app</h1>
+    </header>
+    <main>
+        <form id="sendMessageForm">
+            <label for="newMessage">☺</label>
+            <input type="text" name="message" placeholder="Message">
+            <button type="submit">Send message</button>
+        </form>
+    </main>
+    <footer style="position: fixed; bottom: 0;">
+        <pre>Chat-App Copyright 2020</pre>
+    </footer>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/chat.js"></script>
 </body>

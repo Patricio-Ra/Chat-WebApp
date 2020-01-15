@@ -1,12 +1,18 @@
 'use strict'
 
 const socket = io();
+const sendMessageForm = document.getElementById('sendMessageForm');
 
-socket.on('countUpdated', (count) => {
-    console.log('The count has been updated: ' + count);
+socket.on('message', (message) => {
+    console.log(message);
 });
 
-document.getElementById('incrementBtn').addEventListener('click', (e) => {
-    console.log('Clicked!');
-    socket.emit('increment');
+sendMessageForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (e.target.message.value.trim() !== '') {
+        const message = e.target.message.value;
+        socket.emit('sendMessage', message);
+        e.target.message.value = '';
+    };
 });
+
