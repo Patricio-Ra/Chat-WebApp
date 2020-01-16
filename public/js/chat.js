@@ -1,13 +1,12 @@
 'use strict'
 
 const socket = io();
-const sendMessageForm = document.getElementById('sendMessageForm');
 
 socket.on('message', (message) => {
     console.log(message);
 });
 
-sendMessageForm.addEventListener('submit', (e) => {
+document.getElementById('sendMessageForm').addEventListener('submit', (e) => {
     e.preventDefault();
     if (e.target.message.value.trim() !== '') {
         const message = e.target.message.value;
@@ -16,3 +15,15 @@ sendMessageForm.addEventListener('submit', (e) => {
     };
 });
 
+document.getElementById('sendLocation').addEventListener('click', (e) => {
+    if (!navigator.geolocation) {
+        return alert('Geolocation is not supported by your Browser version.');
+    };
+
+    navigator.geolocation.getCurrentPosition(position => {
+        socket.emit('sendLocation', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        });
+    });
+});
