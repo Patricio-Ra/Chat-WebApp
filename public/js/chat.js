@@ -11,10 +11,18 @@ const $messagesContainer = document.getElementById('messages-container');
 
 // Templates
 const messageTemplate = document.getElementById('message-template').innerHTML;
+const locationMessageTemplate = document.getElementById('location-message-template').innerHTML;
 
-socket.on('message', (message) => {
+socket.on('message', message => {
     const html = Mustache.render(messageTemplate, {
         message
+    });
+    $messagesContainer.insertAdjacentHTML('beforeend', html);
+});
+
+socket.on('locationMessage', url => {
+    const html = Mustache.render(locationMessageTemplate, {
+        url
     });
     $messagesContainer.insertAdjacentHTML('beforeend', html);
 });
