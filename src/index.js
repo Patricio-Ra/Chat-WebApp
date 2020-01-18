@@ -23,10 +23,13 @@ app.use(express.json());
 io.on('connection', (socket) => {
     console.log('New WebSocket connection');
 
-    socket.on('join', ({ username, room }) => {
-        socket.join(room);
-        socket.emit('message', generateMessage(`Welcome, ${username}!`));
-        socket.broadcast.to(room).emit('message', generateMessage(`${username} has joined the room!`));
+    socket.on('join', ({ username, room }, ackCallback) => {
+        const { error, user } = addUser({ id: socket.id, username, room });
+        if (error) return ackCallback(error);
+        socket.join(user.room);
+        socket.emit('message', generateMessage(`Welcome, ${user.showUsername}!`));
+        socket.broadcast.to(user.room).emit('message', generateMessage(`${user.showUsername} has joined the room!`));
+        ackCallback();
     });
 
     socket.on('sendMessage', (message, ackCallback) => {
@@ -44,7 +47,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        io.emit('message', generateMessage('User has left the chat!'));
+        const user = removeUser(socket.id);
+        if (user) io.to(user.room).emit('message', generateMessage(`${user.showUsername} has left the chat!`));
     });
 });
 

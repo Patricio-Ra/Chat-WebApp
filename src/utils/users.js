@@ -1,7 +1,8 @@
 const users = [];
 
 const addUser = ({ id, username, room }) => {
-    // Clean data
+    // Clean data and save showUsername
+    const showUsername = username.trim();
     username = username.trim().toLowerCase();
     room = room.trim().toLowerCase();
 
@@ -13,7 +14,7 @@ const addUser = ({ id, username, room }) => {
     if (existingUser) return { error: 'Username is already in use.' };
 
     // Store and return user
-    const user = { id, username, room };
+    const user = { id, username, room, showUsername };
     users.push(user);
     return { user };
 };
