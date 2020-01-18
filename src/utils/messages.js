@@ -5,10 +5,12 @@ const generateMessage = text => {
     };
 };
 
-const generateLocationMessage = url => {
+const generateLocationMessage = (url, latitude, longitude) => {
     return {
         url,
-        createdAt: new Date().getTime()
+        createdAt: new Date().getTime(),
+        latitude,
+        longitude
     };
 };
 

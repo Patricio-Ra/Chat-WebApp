@@ -4,42 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Chat-app</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="/img/favicon.png" type="image/x-icon">
+    <title>Chat App</title>
 </head>
 <body>
-    <header>
-        <h1>Chat app</h1>
-    </header>
-    <main>
-        <div id="messages-container"></div>
-        <form id="send-message-form">
-            <label>☺</label>
-            <input type="text" name="message" placeholder="Message">
-            <button type="submit">Send message</button>
-        </form>
-        <button id="send-location">Send location</button>
+    <main class="centered-form">
+        <article class="centered-form__box">
+            <h1>Join our chat!</h1>
+            <form action="/chat.html">
+                <label>Display name</label>
+                <input type="text" name="username" placeholder="Display name" required>
+                <label>Room</label>
+                <input type="text" name="room" placeholder="Room" required>
+                <button>Join</button>
+            </form>
+        </article>
     </main>
-    <footer style="position: fixed; bottom: 0;">
-        <pre>Chat-App Copyright 2020</pre>
-    </footer>
-
-    <!-- TEMPLATES -->
-    <script id="message-template" type="text/html">
-        <div>
-            <p>[{{createdAt}}] {{message}}</p>
-        </div>
-    </script>
-    <script id="location-message-template" type="text/html">
-        <div>
-            <p>[{{createdAt}}]<a href={{url}} target="_blank"> User location <</a></p>
-        </div>
-    </script>
-
-    <!-- SCRIPTS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/chat.js"></script>
 </body>
 </html>

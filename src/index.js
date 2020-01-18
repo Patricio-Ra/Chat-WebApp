@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-// Express Server
+// Express/HTTP Server
 const settings = {
     port: process.env.PORT,
     publicDir: path.join(__dirname, '../public'),
@@ -18,12 +18,15 @@ const settings = {
 app.use(express.static(settings.publicDir));
 app.use(express.json());
 
-// Socket.io Server
+// Socket.io/WS Server
 io.on('connection', (socket) => {
     console.log('New WebSocket connection');
-    
-    socket.emit('message', generateMessage('Welcome, user!'));
-    socket.broadcast.emit('message', generateMessage('User has joined the chat!'));
+
+    socket.on('join', ({ username, room }) => {
+        socket.join(room);
+        socket.emit('message', generateMessage(`Welcome, ${username}!`));
+        socket.broadcast.to(room).emit('message', generateMessage(`${username} has joined the room!`));
+    });
 
     socket.on('sendMessage', (message, ackCallback) => {
         const filter = new Filter();
@@ -35,7 +38,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('sendLocation', (coords, ackCallback) => {
-        io.emit('locationMessage', generateLocationMessage(`https://google.com/maps?q=${coords.latitude},${coords.longitude}`));
+        io.emit('locationMessage', generateLocationMessage(`https://google.com/maps?q=${coords.latitude},${coords.longitude}`, coords.latitude, coords.longitude));
         ackCallback();
     });
 
