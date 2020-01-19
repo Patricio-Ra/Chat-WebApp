@@ -18,20 +18,22 @@ const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true }
 
 
 // Listeners
-socket.on('message', message => {
+socket.on('message', ({ text, username, createdAt }) => {
     const html = Mustache.render(messageTemplate, {
-        message: message.text,
-        createdAt: moment(message.createdAt).format('h:mm a')
+        message: text,
+        username,
+        createdAt: moment(createdAt).format('h:mm a')
     });
     $messagesContainer.insertAdjacentHTML('beforeend', html);
 });
 
-socket.on('locationMessage', message => {
+socket.on('locationMessage', ({ url, username, latitude, longitude, createdAt }) => {
     const html = Mustache.render(locationMessageTemplate, {
-        url: message.url,
-        createdAt: moment(message.createdAt).format('h:mm a'),
-        latitude: message.latitude,
-        longitude: message.longitude
+        url,
+        username,
+        latitude,
+        longitude,
+        createdAt: moment(createdAt).format('h:mm a')
     });
     $messagesContainer.insertAdjacentHTML('beforeend', html);
 });

@@ -1,3 +1,5 @@
+const Filter = require('bad-words');
+
 const users = [];
 
 const addUser = ({ id, username, room }) => {
@@ -12,6 +14,11 @@ const addUser = ({ id, username, room }) => {
     // Check for existing user
     const existingUser = users.find(user => user.room === room && user.username === username);
     if (existingUser) return { error: 'Username is already in use.' };
+    // Check for profanity
+    const filter = new Filter();
+    if (filter.isProfane(username)) return { error: 'Profanity usernames are not allowed.' };
+    // Check for admin
+    if (username === 'admin') return { error: 'Username not allowed.'};
 
     // Store and return user
     const user = { id, username, room, showUsername };
