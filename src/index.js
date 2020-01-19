@@ -21,6 +21,7 @@ app.use(express.json());
 
 // Socket.io/WS Server
 io.on('connection', (socket) => {
+    console.log('New WebSocket connection.');
 
     socket.on('join', ({ username, room }, ackCallback) => {
         const { error, user } = addUser({ id: socket.id, username, room });
@@ -28,9 +29,11 @@ io.on('connection', (socket) => {
         socket.join(user.room);
         socket.emit('message', generateMessage(`Welcome, ${user.showUsername}!`));
         socket.broadcast.to(user.room).emit('message', generateMessage(`${user.showUsername} has joined the room!`));
+        io.to(user.room).emit('roomData', {
+            room: user.room,
+            users: getUsersInRoom(user.room)
+        });
         ackCallback();
-        console.log(`WebSocket | New connection. Total users: N`);
-        console.log(`WebSocket | Room: ${user.room}. Users In Room: ${getUsersInRoom(user.room).length}`);
     });
 
     socket.on('sendMessage', (message, ackCallback) => {
@@ -54,10 +57,11 @@ io.on('connection', (socket) => {
         const user = removeUser(socket.id);
         if (user) {
             io.to(user.room).emit('message', generateMessage(`${user.showUsername} has left the chat!`));
-            console.log(`Websocket | Room: ${user.room}. Users In Room: ${getUsersInRoom(user.room).length}`);
-        } else {
-            console.log(`WebSocket | User failed to join a room`);
-        }
+            io.to(user.room).emit('roomData', {
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            });
+        };
     });
 });
 

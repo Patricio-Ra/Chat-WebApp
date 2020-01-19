@@ -8,10 +8,12 @@ const $messageFormInput = $messageForm.querySelector('input');
 const $messageFormButton = $messageForm.querySelector('button');
 const $sendLocationButton = document.getElementById('send-location');
 const $messagesContainer = document.getElementById('messages-container');
+const $usersSidebar = document.getElementById('sidebar');
 
 // Templates
 const messageTemplate = document.getElementById('message-template').innerHTML;
 const locationMessageTemplate = document.getElementById('location-message-template').innerHTML;
+const sidebarTemplate = document.getElementById('sidebar-template').innerHTML;
 
 // Options
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
@@ -38,7 +40,23 @@ socket.on('locationMessage', ({ url, username, latitude, longitude, createdAt })
     $messagesContainer.insertAdjacentHTML('beforeend', html);
 });
 
+socket.on('roomData', ({ room, users }) => {
+    const html = Mustache.render(sidebarTemplate, {
+        room,
+        users,
+        count: users.length
+    });
+    $usersSidebar.innerHTML = html;
+});
+
 // Emitters
+socket.emit('join', { username, room }, error => {
+    if (error) {
+        alert(error);
+        location.href = '/';
+    };
+});
+
 $messageForm.addEventListener('submit', (e) => {
     e.preventDefault();
     let message = e.target.message.value;
@@ -72,11 +90,4 @@ $sendLocationButton.addEventListener('click', (e) => {
             console.log('Location Shared!');
         });
     });
-});
-
-socket.emit('join', { username, room }, error => {
-    if (error) {
-        alert(error);
-        location.href = '/';
-    };
 });
