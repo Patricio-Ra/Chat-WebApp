@@ -18,6 +18,24 @@ const sidebarTemplate = document.getElementById('sidebar-template').innerHTML;
 // Options
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
 
+const autoscroll = () => {
+    // Get new message DOM element.
+    const $newMessage = $messagesContainer.lastElementChild;
+    // Get the complete height of the new message element.
+    const newMessageStyles = getComputedStyle($newMessage);
+    const newMessageMargin = parseInt(newMessageStyles.marginBottom);
+    const newMessageHeight = $newMessage.offsetHeight + newMessageMargin;
+    // Get the visible height: Messages container DOM element OFFSET Height
+    const visibleHeight = $messagesContainer.offsetHeight;
+    // Get total height of messages container DOM element.
+    const containerHeight = $messagesContainer.scrollHeight;
+    // Get the user scroll position.
+    const scrollOffset = $messagesContainer.scrollTop + visibleHeight;
+    // Check the scroll position BEFORE the new message is added in.
+    if (containerHeight - newMessageHeight <= scrollOffset + 10) {
+        $messagesContainer.scrollTop = containerHeight;
+    };
+};
 
 // Listeners
 socket.on('message', ({ text, username, createdAt }) => {
@@ -27,6 +45,7 @@ socket.on('message', ({ text, username, createdAt }) => {
         createdAt: moment(createdAt).format('h:mm a')
     });
     $messagesContainer.insertAdjacentHTML('beforeend', html);
+    autoscroll();
 });
 
 socket.on('locationMessage', ({ url, username, latitude, longitude, createdAt }) => {
@@ -38,6 +57,7 @@ socket.on('locationMessage', ({ url, username, latitude, longitude, createdAt })
         createdAt: moment(createdAt).format('h:mm a')
     });
     $messagesContainer.insertAdjacentHTML('beforeend', html);
+    autoscroll();
 });
 
 socket.on('roomData', ({ room, users }) => {
