@@ -10,10 +10,6 @@ html {
     font-size: 16px;
 }
 
-input {
-    font-size: 14px;
-}
-
 body {
     line-height: 1.4;
     color: #333333;
@@ -35,6 +31,8 @@ input {
     border: 1px solid #eeeeee;
     padding: 12px;
     outline: none;
+    border-radius: 2px;
+    font-size: 14px;
 }
 
 button {
@@ -42,6 +40,7 @@ button {
     padding: 12px;
     background: #7C5CBF;
     border: none;
+    border-radius: 2px;
     color: white;
     font-size: 16px;
     transition: background .3s ease;
@@ -73,6 +72,7 @@ button:disabled {
     background: #F7F7FA;
     padding: 24px;
     width: 250px;
+    border-radius: 2px;
 }
 
 .centered-form button {
