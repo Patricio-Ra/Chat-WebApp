@@ -90,7 +90,6 @@ $messageForm.addEventListener('submit', (e) => {
             if (error) {
                 return console.log(error);
             };
-            console.log('Delivered');
         });
     };
 });
@@ -107,7 +106,6 @@ $sendLocationButton.addEventListener('click', (e) => {
             longitude: position.coords.longitude
         }, () => {
             $sendLocationButton.removeAttribute('disabled');
-            console.log('Location Shared!');
         });
     });
 });
