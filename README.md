@@ -22,7 +22,8 @@
   * Modules: UUID, Moment, qs, bad-words.
   
 ## Todo:
-- [ ] Add Webpack and Babel.
+- [ ] Add Webpack and Babel?
 - [ ] Add DB.
 - [ ] OOP refactoring.
-- See `issues` for more future implementations.
+- [ ] Auth.
+- See `issues` for others future implementations.
