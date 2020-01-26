@@ -19,7 +19,7 @@
   * Socket.io.
   * Mustache.
   * localStorage.
-  * Modules: UUID, Moment, qs.
+  * Modules: UUID, Moment, qs, bad-words.
   
 ## Todo:
 - [ ] Add Webpack and Babel.
