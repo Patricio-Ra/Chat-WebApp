@@ -18,7 +18,6 @@
   * NodeJS and Express.
   * Socket.io.
   * Mustache.
-  * localStorage.
   * Modules: UUID, Moment, qs, bad-words.
   
 ## Todo:
